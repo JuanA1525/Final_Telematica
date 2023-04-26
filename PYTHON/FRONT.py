@@ -7,7 +7,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 
-url = "http://localhost:5000/mostrar_estacionesnivel?psw=12345678"
+url = "http://0.0.0.0:5000/mostrar_estacionesnivel?psw=12345678"
 data = pd.read_json(url,convert_dates='True')
 
 latr = []
@@ -30,5 +30,5 @@ app.layout = html.Div([
                dcc.Graph(figure=fig)
                ])
 
-app.run_server(host='0.0.0.0',port=80)
+app.run_server(host='0.0.0.0',port=5010)
 
