@@ -4,8 +4,9 @@ import plotly.graph_objects as go
 import json
 import plotly
 import plotly.express as px
+import requests
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.secret_key = 'clave_secreta'
 
 # Ruta para la página de inicio de sesión
@@ -20,8 +21,14 @@ def process_login():
     username = request.form["username"]
     password = request.form["password"]
 
+    # Hacer la solicitud al servidor de Flask que contiene el JSON
+    response = requests.get('http://localhost:3000/database')
+
+    # Convertir la respuesta a un DataFrame de pandas
+    df = pd.read_json(response.text)
+
     # Validar los datos de inicio de sesión
-    if username == "usuario" and password == "contraseña":
+    if any((df['username'] == username) & (df['password'] == password)):
         # Si son correctos, redirigir a la página de inicio
         # de sesión con una variable de sesión que indica que
         # el usuario ha iniciado sesión correctamente
@@ -31,7 +38,7 @@ def process_login():
     else:
         # Si son incorrectos, mostrar un mensaje de error
         # en la página de inicio de sesión
-        error = "Nombre de usuario o contraseña incorrectos"
+        error = "Al parecer alguno de los datos fue introducido de manera incorrecta! Vuelve a intentarlo"
         return render_template("login.html", error=error)
 
 # Ruta para la página de inicio después de iniciar sesión con éxito
@@ -40,7 +47,8 @@ def grafica():
     # Verificar si el usuario ha iniciado sesión
     if not session.get("logged_in"):
         # Si no ha iniciado sesión, redirigir a la página de inicio de sesión
-        return redirect(url_for("login"))
+        error = "Inicia sesion antes de intentar acceder a la grafica."
+        return render_template("login.html", error=error)
 
     url = "http://0.0.0.0:5000/mostrar_estacionesnivel"
     data = pd.read_json(url,convert_dates='True')
@@ -60,7 +68,7 @@ def grafica():
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return render_template('grafica.html', graphJSON=graphJSON)
 
-# Ruta para cerrar sesión
+# Ruta pa cerrar sesión
 @app.route("/logout")
 def logout():
     # Eliminar la variable de sesión que indica que el usuario ha iniciado sesión
@@ -68,5 +76,5 @@ def logout():
     session.pop("username", None)
     return redirect(url_for("login"))
 
-if _name_ == "_main_":
-    app.run(host="0.0.0.0", port=8080)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)

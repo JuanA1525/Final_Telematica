@@ -1,9 +1,0 @@
-@app.route('/procesar', methods=['POST'])
-def procesar():
-    data = request.json
-    usernames = []
-    passwords = []
-    for row in data:
-        usernames.append(row['username'])
-        passwords.append(row['password'])
-    return 'Datos procesados correctamente.'

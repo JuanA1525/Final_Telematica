@@ -1,8 +1,75 @@
 <!doctype html>
 <html>
+<head>
+  <title>Grafica SIATA | Final Telematica</title>
+</head>
  <body>
-  <h1>Hello Plotly (but not Dash)</h1>
+  <h1>Bienvenido, aqui tienes la grafica del SIATA en vivo.</h1>
   <div id='chart' class='chart'”></div>
+  <h3>Andres Benjumea Reinoso - Juan Andres Porras</h3>
+  <a href="/logout">Cerrar sesión</a>
+  <style type="text/css">
+
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;800&display=swap');
+
+    :root{
+      --raleway: 'Raleway', sans-serif;
+    }
+    
+    *{
+      margin: 0;
+      padding: 0;
+    }
+
+    body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      background: url('https://img.freepik.com/fotos-premium/textura-fondo-marmol-blanco_42682-224.jpg?w=2000');
+      background-size: cover;
+      font-family: var(--raleway);
+      font-weight: bold;
+    }
+
+    body h1, body h3, body a{
+      margin-bottom: 1em;
+      color: #fff;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, .6);
+      animation: left-slide 1s ease-in;
+    }
+
+
+    #chart{
+      transform: scale(0.8);
+      transition: 1s;
+      animation: right-slide 3s ease;
+    }
+
+    @keyframes left-slide{
+        from{
+          transform: translateX(-30px);
+          opacity: 0;
+        }to{
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes right-slide{
+        from{
+          transform: translateX(30px) scale(0.8);
+          opacity: 0;
+        }to{
+          transform: translateX(0) scale(0.8);
+          opacity: 1;
+        }
+      }
+
+
+  </style>
+
 </body>
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 <script type='text/javascript'>
